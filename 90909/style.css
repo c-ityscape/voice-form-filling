@@ -1,0 +1,134 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, white, white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Main Container: Flexbox layout for left form and right image */
+  .main-container {
+    display: flex;
+    justify-content: space-between; /* Space between form and image */
+    width: 80%;  /* Width of the entire container */
+    max-width: 1200px; /* Maximum width */
+    height: 600px;  /* Height of the container */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Left Form Container */
+  .form-container {
+    width: 50%;  /* Left container for login/signup */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Right Image Section */
+  .image-section {
+    width: 50%;  /* Right section for image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .image-section img {
+    width: 80%;  /* Image size, adjust as needed */
+    height: 70%;
+  }
+  
+  /* Button Box for Toggle (Login/Signup) */
+  .button-box {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+  }
+  
+  .toggle-btn {
+    width: 48%;
+    padding: 10px 0;
+    border: none;
+    background: #f3f3f3;
+    color: #333;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+  }
+  
+  .toggle-btn.active {
+    background: #5e3a69;
+    color: white;
+  }
+  
+  /* Form Content */
+  .form-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Forms (Login/Signup) */
+  .form {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    box-sizing: border-box;
+  }
+  
+  .form.active {
+    display: flex;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+  
+  input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  input:focus {
+    border-color: #5e3a69;
+    outline: none;
+  }
+  
+  /* Button Styling */
+  .btn {
+    background: #5e3a69;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .btn:hover {
+    background: #5e3a69;
+  }
+  
