@@ -1,310 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admission Form</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: white;
-    }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-    .header {
-      text-align: center;
-      background-color: #5e3a69;
-      color: white;
-      padding: 20px;
-      border-radius: 8px 8px 0 0;
-    }
-    .header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-    .header p {
-      margin: 5px 0 0;
-      font-size: 16px;
-    }
-    .form-group {
-      display: flex;
-      justify-content: space-between;
-      margin: 15px 0;
-    }
-    .form-group label {
-      flex: 1;
-      font-weight: bold;
-    }
-    .form-group input,
-    .form-group select {
-      flex: 3;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .form-group textarea {
-      flex: 2;
-      padding: 5px;
-      border: 1px solid white;
-      border-radius: 4px;
-      resize: none;
-    }
-    .section-title {
-      font-size: 20px;
-      margin: 20px 0 15px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
-      color: #333;
-    }
-    .checkbox-group,
-    .radio-group {
-      display: flex;
-      align-items: center;
-    }
-    .checkbox-group label,
-    .radio-group label {
-      margin-left: 5px;
-    }
-    .declaration {
-      margin: 20px 0;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .signature {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .signature div {
-      text-align: center;
-      flex: 1;
-    }
-    .signature div span {
-      display: block;
-      margin-top: 40px;
-      border-top: 1px solid #000;
-      width: 80%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      background-color: #5e3a69;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-    button:hover {
-      background-color: #5e3a69;
-    }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #5e3a69;
+        }
 
-    .mic-icon {
-      cursor: pointer;
-      font-size: 20px;
-      margin-left: 10px;
-    }
+        form {
+            background: #fff;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-  </style>
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        input[type="text"]:disabled,
+        textarea:disabled {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            display: inline-block;
+            background-color: #5e3a69;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #462953;
+        }
+
+        button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin: 10px auto;
+            max-width: 500px;
+            text-align: center;
+            color: #5e3a69;
+            font-weight: bold;
+        }
+
+        br {
+            line-height: 2;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Student Registration Form</h1>
-    </div>
+    <h1>Registration Form</h1>
+    <form id="audioForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter your name" disabled>
+        <button type="button" id="recordName">Record Name</button>
+        <br><br>
 
-    <form>
-      <!-- Personal Details -->
-      <div class="section-title">Personal Details</div>
-      <div class="form-group">
-        <label for="studentName">Student's Name:</label>
-        <input type="text" id="studentName" placeholder="Enter full name" required />
-        <span class="mic-icon" onclick="startSpeechRecognition('studentName')">🎙</span>
-      </div>
-      <div class="form-group">
         <label for="fatherName">Father's Name:</label>
-        <input type="text" id="fatherName" placeholder="Enter father's name" required />
-        <span class="mic-icon" onclick="startSpeechRecognition('fatherName')">🎙</span>
-      </div>
-      <div class="form-group">
+        <input type="text" id="fatherName" placeholder="Enter your father's name" disabled>
+        <button type="button" id="recordFatherName">Record Father's Name</button>
+        <br><br>
+
         <label for="motherName">Mother's Name:</label>
-        <input type="text" id="motherName" placeholder="Enter mother's name" required />
-        <span class="mic-icon" onclick="startSpeechRecognition('motherName')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="dob">Birth Date:</label>
-        <input type="date" id="dob" required />
-        <span class="mic-icon" onclick="startSpeechRecognition('dob')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label>Gender:</label>
-        <div>
-          <label><input type="radio" name="gender" value="Male" required /> Male</label>
-          <label><input type="radio" name="gender" value="Female" required /> Female</label>
-          <span class="mic-icon" onclick="startSpeechRecognition('gender')">🎙</span>
-        </div>
-      </div>
+        <input type="text" id="motherName" placeholder="Enter your mother's name" disabled>
+        <button type="button" id="recordMotherName">Record Mother's Name</button>
+        <br><br>
 
+        <label for="birthDate">Birth Date:</label>
+        <input type="text" id="birthDate" placeholder="Enter your birth date" disabled>
+        <button type="button" id="recordBirthDate">Record Birth Date</button>
+        <br><br>
 
-       <!-- Present Address -->
-       <div class="section-title">Present Address</div>
-       <div class="form-group">
-         <label for="division">Division:</label>
-         <input type="text" id="division" placeholder="Enter division" required />
-         <span class="mic-icon" onclick="startSpeechRecognition('division')">🎙</span>
-       </div>
-       <div class="form-group">
-         <label for="district">District:</label>
-         <input type="text" id="district" placeholder="Enter district" required />
-         <span class="mic-icon" onclick="startSpeechRecognition('district')">🎙</span>
-       </div>
-       <div class="form-group">
-         <label for="address">Address:</label>
-         <input type="text" id="perDistrict" placeholder="Enter full address"></textarea>
-         <span class="mic-icon" onclick="startSpeechRecognition('address')">🎙</span>
-       </div>
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" placeholder="Enter your gender" disabled>
+        <button type="button" id="recordGender">Record Gender</button>
+        <br><br>
 
+        <label for="address">Address:</label>
+        <textarea id="address" placeholder="Enter your address" disabled></textarea>
+        <button type="button" id="recordAddress">Record Address</button>
+        <br><br>
 
-       <!-- Permanent Address -->
-       <div class="section-title">Permanent Address</div>
-       <div class="form-group">
-         <label for="perDivision">Division:</label>
-         <input type="text" id="perDivision" placeholder="Enter division" />
-         <span class="mic-icon" onclick="startSpeechRecognition('division')">🎙</span>
-       </div>
-       <div class="form-group">
-         <label for="perDistrict">District:</label>
-         <input type="text" id="perDistrict" placeholder="Enter district" />
-         <span class="mic-icon" onclick="startSpeechRecognition('district')">🎙</span>
-       </div>
-       <div class="form-group">
-         <label for="perAddress">Address:</label>
-         <input type="text" id="perDistrict" placeholder="Enter full address"></textarea>
-         <span class="mic-icon" onclick="startSpeechRecognition('address')">🎙</span>
-       </div>
-
-
-      <!-- Educational Details -->
-      <div class="section-title">Educational Details</Details></div>
-      <div class="form-group">
-        <label for="branch">Branch:</label>
-        <input type="text" id="branch" placeholder="Enter branch" />
-        <span class="mic-icon" onclick="startSpeechRecognition('branch')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="section">Section:</label>
-        <input type="text" id="section" placeholder="Enter section"></textarea>
-        <span class="mic-icon" onclick="startSpeechRecognition('section')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="roll number">Roll Number:</label>
-        <input type="text" id="roll number" placeholder="Enter roll number" />
-        <span class="mic-icon" onclick="startSpeechRecognition('roll number')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="year of study">Year of Study:</label>
-        <input type="text" id="year of study" placeholder="Enter year of study"></textarea>
-        <span class="mic-icon" onclick="startSpeechRecognition('year of study')">🎙</span>
-      </div><div class="form-group">
-        <label for="previous year percentage">Previous Year Percentage:</label>
-        <input type="text" id="previous year percentage" placeholder="Enter previous year percentage"></textarea>
-        <span class="mic-icon" onclick="startSpeechRecognition('previous year percentage')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="attendance percentage">Attendance Percentage:</label>
-        <input type="text" id="attendance percentage" placeholder="Enter attendance percentage"></textarea>
-        <span class="mic-icon" onclick="startSpeechRecognition('attendance percentage')">🎙</span>
-      </div>
-
-
-          <!-- Other Information -->
-      <div class="section-title">Other Information</div>
-      <div class="form-group">
-        <label for="religion">Religion:</label>
-        <input type="text" id="religion" placeholder="Enter religion" />
-        <span class="mic-icon" onclick="startSpeechRecognition('religion')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="nationality">Nationality:</label>
-        <input type="text" id="nationality" placeholder="Enter nationality" />
-        <span class="mic-icon" onclick="startSpeechRecognition('nationality')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" placeholder="Enter phone number" />
-        <span class="mic-icon" onclick="startSpeechRecognition('Phone number')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" placeholder="Enter email address" />
-        <span class="mic-icon" onclick="startSpeechRecognition('email address')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="bloodGroup">Blood Group:</label>
-        <input type="text" id="bloodGroup" placeholder="Enter blood group" />
-        <span class="mic-icon" onclick="startSpeechRecognition('blood group')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="occupation">Occupation:</label>
-        <input type="text" id="occupation" placeholder="Enter occupation" />
-        <span class="mic-icon" onclick="startSpeechRecognition('occupation')">🎙</span>
-      </div>
-      <div class="form-group">
-        <label for="course">Course Name:</label>
-        <input type="text" id="course" placeholder="Enter course name" required />
-        <span class="mic-icon" onclick="startSpeechRecognition('course name')">🎙</span>
-      </div>
-
- 
- 
-
-      <!-- Other fields... -->
-
-      <button type="submit">Submit</button>
+        <label for="phone">Phone No.:</label>
+        <input type="text" id="phone" placeholder="Enter your phone number" disabled>
+        <button type="button" id="recordPhone">Record Phone No.</button>
+        <br><br>
     </form>
-  </div>
 
+    <div id="status"></div>
 
-     
+    <script>
+        let recorder;
 
+        function startRecording(buttonId, fieldId) {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+                const mediaRecorder = new MediaRecorder(stream);
+                recorder = mediaRecorder;
 
-  <script>
-    // Start speech recognition
-    const startSpeechRecognition = (fieldId) => {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = 'en-US';
-      recognition.start();
+                recorder.ondataavailable = function (event) {
+                    const audioBlob = event.data;
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById(fieldId).value = transcript;
-      };
+                    // Send the recorded audio to the server
+                    const formData = new FormData();
+                    formData.append("audio_file", audioBlob, `${fieldId}.webm`);
 
-      recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-      };
-    };
-  </script>
+                    fetch("/upload", {
+                        method: "POST",
+                        body: formData,
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            document.getElementById("status").innerText = data.message;
+
+                            if (data.text) {
+                                // Populate the respective input field with transcribed text
+                                document.getElementById(fieldId).value = data.text;
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                            document.getElementById("status").innerText = "Upload failed.";
+                        });
+                };
+
+                recorder.start();
+                document.getElementById(buttonId).innerText = "Stop Recording";
+            });
+        }
+
+        function stopRecording(buttonId, fieldId) {
+            recorder.stop();
+            document.getElementById(buttonId).innerText = `Record ${fieldId}`;
+        }
+
+        // Add event listeners for all buttons
+        const fields = ["name", "fatherName", "motherName", "birthDate", "gender", "address", "phone"];
+        fields.forEach(fieldId => {
+            const buttonId = `record${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`;
+            document.getElementById(buttonId).addEventListener("click", function () {
+                if (this.innerText.startsWith("Record")) {
+                    startRecording(buttonId, fieldId);
+                } else {
+                    stopRecording(buttonId, fieldId);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
