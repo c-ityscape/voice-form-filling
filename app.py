@@ -1,16 +1,19 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, render_template
 import os
 import whisper
-
+import re
 app = Flask(__name__)
 
 # Load the Whisper model once to reuse for multiple requests
-model = whisper.load_model("base")
+model = whisper.load_model("small.en" )
 
 @app.route('/')
 def home():
-    
-    return send_from_directory('.', 'index.html')  # Serves the index.html file
+    return render_template('signup.html')  # Serve signup form FIRST
+
+@app.route('/registration') #New route for registration page
+def registration():
+    return render_template('registration.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_audio():
@@ -29,6 +32,26 @@ def upload_audio():
     try:
         result = model.transcribe(file_path)
         transcribed_text = result.get("text", "")
+
+        # Identify the field based on the request data (e.g., using a hidden field)
+        field_name = request.form.get('field_name') 
+        print(field_name)
+
+        # Preprocess the transcribed text based on the field
+        if field_name == 'email' or field_name == 'loginEmail':
+            transcribed_text = transcribed_text.replace(" at the rate ", "@") 
+            transcribed_text = transcribed_text.replace(" at rate ", "@") 
+            transcribed_text = transcribed_text.replace(" at-rate ", "@") 
+            transcribed_text = transcribed_text.replace(" dot ", ".")
+            transcribed_text = transcribed_text.replace(" . ", ".") 
+           
+            processed_text = transcribed_text
+        else:
+            processed_text = transcribed_text
+
+        # Debugging print statement
+        print(f"Transcribed text: {transcribed_text}")
+        print(f"Processed text: {processed_text}") 
 
         # Delete the uploaded file after transcription to save space
         os.remove(file_path)
