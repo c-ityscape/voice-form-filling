@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup and Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #373B44, #4286f4);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #4286f4;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-group input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 3px rgba(0, 123, 255, 0.25);
+    }
+
+    .input-group button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      font-size: 1.2em;
+    }
+
+    .toggle-eye {
+      cursor: pointer;
+    }
+
+    .button {
+      width: 100%;
+      background: linear-gradient(to right, #4286f4, #373B44);
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background: linear-gradient(to right, #373B44, #4286f4);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 10px;
+      color: #777;
+    }
+
+    .form-footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .icon {
+      color: #007bff;
+      cursor: pointer;
+    }
+
+    #status {
+      text-align: center;
+      margin-top: 10px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="signup-container">
+    <h2>Create an Account</h2>
+    <form id="signupForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-group">
+          <input type="text" id="username" name="username" required disabled />
+          <button type="button" id="recordUsername"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-group">
+          <input type="email" id="email" name="email" required disabled />
+          <button type="button" id="recordEmail"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <input type="password" id="password" name="password" required disabled />
+          <i class="toggle-eye" onclick="togglePasswordVisibility('password')">👁</i>
+          <button type="button" id="recordPassword"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-group">
+          <input type="password" id="confirmPassword" name="confirmPassword" required disabled />
+          <i class="toggle-eye" onclick="togglePasswordVisibility('confirmPassword')">👁</i>
+          <button type="button" id="recordConfirmPassword"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <button type="submit" class="button">Sign Up</button>
+    </form>
+    <div class="form-footer">
+      Already have an account? <a href="#" onclick="showLogin()">Login here</a>
+    </div>
+  </div>
+
+  <div class="container" id="login-container" style="display: none">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Email</label>
+        <div class="input-group">
+          <input type="email" id="loginEmail" name="loginEmail" required disabled />
+          <button type="button" id="recordLoginEmail"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <div class="input-group">
+          <input type="password" id="loginPassword" name="loginPassword" required disabled />
+          <i class="toggle-eye" onclick="togglePasswordVisibility('loginPassword')">👁</i>
+          <button type="button" id="recordLoginPassword"><i class="icon">🎤</i></button>
+        </div>
+      </div>
+      <button type="submit" class="button">Login</button>
+    </form>
+    <div class="form-footer">
+      Don't have an account? <a href="#" onclick="showSignup()">Sign up here</a>
+    </div>
+  </div>
+  <br>
+  <div id="status"></div>
+  <script>
+    // Microphone recording logic
+    let recorder;
+
+function startRecording(buttonId, fieldId) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+        const mediaRecorder = new MediaRecorder(stream);
+        recorder = mediaRecorder;
+
+        recorder.ondataavailable = function (event) {
+          const audioBlob = event.data;
+
+          const formData = new FormData();
+          formData.append("audio_file", audioBlob, `${fieldId}.webm`);
+
+          fetch("/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("status").innerText = data.message;
+
+              if (data.text) {
+                document.getElementById(fieldId).value = data.text;
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("status").innerText = "Upload failed.";
+            });
+        };
+
+        recorder.start();
+        document.getElementById(buttonId).innerHTML = "<i class='icon'>⏹</i>";
+      });
+    }
+
+
+    function stopRecording(buttonId) {
+      if (recorder) {
+        recorder.stop();
+        document.getElementById(buttonId).innerHTML = "<i class='icon'>🎤</i>";
+      }
+    }
+
+    const voiceFields = ["username", "email", "password", "confirmPassword", "loginEmail", "loginPassword"];
+    voiceFields.forEach(fieldId => {
+      const buttonId = `record${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`;
+      const button = document.getElementById(buttonId);
+      if (button) {
+        button.addEventListener("click", () => {
+          if (button.innerHTML.includes("🎤")) {
+            startRecording(buttonId, fieldId);
+          } else {
+            stopRecording(buttonId);
+          }
+        });
+      }
+    });
+
+    // Show/hide forms
+    function showLogin() {
+      document.getElementById("signup-container").style.display = "none";
+      document.getElementById("login-container").style.display = "block";
+    }
+
+    function showSignup() {
+      document.getElementById("login-container").style.display = "none";
+      document.getElementById("signup-container").style.display = "block";
+    }
+
+    // Toggle password visibility
+    function togglePasswordVisibility(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (field.type === "password") {
+        field.type = "text";
+      } else {
+        field.type = "password";
+      }
+    }
+
+    // Form submission logic
+    document.getElementById("signupForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      const user = { username, email, password };
+      localStorage.setItem(email, JSON.stringify(user));
+
+      alert("Signup successful! You can now log in.");
+      document.getElementById("signupForm").reset();
+      showLogin();
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      const user = JSON.parse(localStorage.getItem(email));
+
+      if (!user || user.password !== password) {
+        alert("Invalid email or password.");
+      } else {
+        alert("Login successful!");
+        
+      }
+    });
+  </script>
+</body>
+</html>

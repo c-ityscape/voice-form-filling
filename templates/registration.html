@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Education Form</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: linear-gradient(to right, #373B44, #4286f4);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    #audioForm {
+      background-color: #fff;
+      width: 600px;
+      padding: 25px;
+      border-radius: 10px 10px 10px 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    .container {
+      width: 800px; /* Increased width significantly */
+      margin: 20px auto;
+      background: #fff; /* White background for containers */
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box; /* Ensures padding/border are included in width */
+    }
+
+    .container form {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    input[type="text"],
+    textarea {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-right: 10px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    input[type="text"]:disabled,
+    textarea:disabled {
+      background-color: #f9f9f9;
+    }
+
+    button {
+      display: inline-block;
+      background-color: transparent;
+      border: none;
+      padding: 0 10px;
+      cursor: pointer;
+      font-size: 20px;
+      color: #4286f4;
+      transition: color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      color: #000;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    button i {
+      font-style: normal;
+    }
+
+    #status {
+      margin: 10px auto;
+      max-width: 500px;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    br {
+      line-height: 2;
+    }
+
+    .icon {
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      color: #4286f4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Registration Form</h1>
+  <form id="audioForm">
+    <label for="name">Name:</label>
+    <div class="input-group">
+      <input type="text" id="name" placeholder="Enter your name" disabled>
+      <button type="button" id="recordName"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="fatherName">Father's Name:</label>
+    <div class="input-group">
+      <input type="text" id="fatherName" placeholder="Enter your father's name" disabled>
+      <button type="button" id="recordFatherName"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="motherName">Mother's Name:</label>
+    <div class="input-group">
+      <input type="text" id="motherName" placeholder="Enter your mother's name" disabled>
+      <button type="button" id="recordMotherName"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="birthDate">Birth Date:</label>
+    <div class="input-group">
+      <input type="text" id="birthDate" placeholder="Enter your birth date" disabled>
+      <button type="button" id="recordBirthDate"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="gender">Gender:</label>
+    <div class="input-group">
+      <input type="text" id="gender" placeholder="Enter your gender" disabled>
+      <button type="button" id="recordGender"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="address">Address:</label>
+    <div class="input-group">
+      <textarea id="address" placeholder="Enter your address" disabled></textarea>
+      <button type="button" id="recordAddress"><i class="icon">🎤</i></button>
+    </div>
+
+    <label for="phone">Phone No.:</label>
+    <div class="input-group">
+      <input type="text" id="phone" placeholder="Enter your phone number" disabled>
+      <button type="button" id="recordPhone"><i class="icon">🎤</i></button>
+    </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" id="submitButton" style="background-image: linear-gradient(to right, #373B44, #4286f4); color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+        </div>
+  </form>
+
+  <div id="status"></div>
+
+  <script>
+    let recorder;
+
+    function startRecording(buttonId, fieldId) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
+        const mediaRecorder = new MediaRecorder(stream);
+        recorder = mediaRecorder;
+
+        recorder.ondataavailable = function (event) {
+          const audioBlob = event.data;
+
+          const formData = new FormData();
+          formData.append("audio_file", audioBlob, `${fieldId}.webm`);
+
+          fetch("/upload", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("status").innerText = data.message;
+
+              if (data.text) {
+                document.getElementById(fieldId).value = data.text;
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("status").innerText = "Upload failed.";
+            });
+        };
+
+        recorder.start();
+        document.getElementById(buttonId).innerHTML = "<i class='icon'>⏹</i>";
+      });
+    }
+
+    function stopRecording(buttonId, fieldId) {
+      recorder.stop();
+      document.getElementById(buttonId).innerHTML = "<i class='icon'>🎤</i>";
+    }
+
+    const fields = ["name", "fatherName", "motherName", "birthDate", "gender", "address", "phone"];
+    fields.forEach(fieldId => {
+      const buttonId = `record${fieldId.charAt(0).toUpperCase() + fieldId.slice(1)}`;
+      document.getElementById(buttonId).addEventListener("click", function () {
+        if (this.innerHTML.includes("🎤")) {
+          startRecording(buttonId, fieldId);
+        } else {
+          stopRecording(buttonId, fieldId);
+        }
+      });
+    });
+
+    document.getElementById("submitButton").addEventListener("click", function(event) {
+        event.preventDefault(); // Prevent form from actually submitting
+        const name = document.getElementById("name").value;
+        alert(`${name}, you have submitted the form successfully`);
+    });
+  </script>
+</body>
+</html>
