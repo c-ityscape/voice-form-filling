@@ -3,3 +3,4 @@ librosa
 numpy
 gunicorn
 openai-whisper
+git+https://github.com/openai/whisper.git 

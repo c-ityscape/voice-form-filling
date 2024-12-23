@@ -1,9 +1,0 @@
-# Ignore virtual environments and cache
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-.venv/
-env/
-build/
-dist/
