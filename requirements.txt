@@ -3,3 +3,4 @@ openai-whisper
 torch==2.5.1
 librosa
 numpy
+gunicorn==22.0.0
