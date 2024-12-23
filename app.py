@@ -34,7 +34,7 @@ def upload_audio():
         transcribed_text = result.get("text", "")
 
         # Identify the field based on the request data (e.g., using a hidden field)
-        field_name = request.form.get('field_name') 
+        field_name = request.form.get('field_id') 
         print(field_name)
 
         # Preprocess the transcribed text based on the field
