@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify, send_from_directory, render_template
 import os
 import whisper
-import re
+
 app = Flask(__name__)
 
 # Load the Whisper model once to reuse for multiple requests
-model = whisper.load_model("base.en" )
+model = whisper.load_model("tiny" )
 
 @app.route('/')
 def home():
