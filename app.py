@@ -5,7 +5,7 @@ import re
 app = Flask(__name__)
 
 # Load the Whisper model once to reuse for multiple requests
-model = whisper.load_model("small.en" )
+model = whisper.load_model("base.en" )
 
 @app.route('/')
 def home():
