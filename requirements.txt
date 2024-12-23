@@ -2,4 +2,4 @@ flask
 librosa
 numpy
 gunicorn
-whisper
+openai-whisper
