@@ -1,4 +1,4 @@
-# Voice-Based Form Filling App
+# Voice-Based Form Filling 
 
 This is a Flask-based web application that leverages OpenAI's Whisper model for transcribing audio input to text. The app facilitates voice-driven form filling by allowing users to upload audio files containing their responses. The application processes the audio files, extracts the transcribed text, and maps it to specific form fields.
 
