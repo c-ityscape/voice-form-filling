@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template
 import os
 import whisper
 from werkzeug.utils import secure_filename
+import io
+import numpy as np
+import soundfile as sf
 
 app = Flask(__name__)
 
@@ -24,7 +27,9 @@ def upload_audio():
     filename = secure_filename(audio_file.filename)
 
     try:
-        audio_data = audio_file.stream
+        audio_data = audio_file.stream.read()  # Read the entire stream into memory
+        audio_np, sr = sf.read(io.BytesIO(audio_data)) #Convert to numpy array
+
 
         result = model.transcribe(audio_data)
         transcribed_text = result.get("text", "")
