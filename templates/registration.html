@@ -190,7 +190,7 @@
 
           const formData = new FormData();
           formData.append("audio_file", audioBlob, `${fieldId}.webm`);
-          formData.append("field_name", fieldId);
+          
 
           fetch("/upload", {
             method: "POST",

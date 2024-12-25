@@ -197,7 +197,7 @@ function startRecording(buttonId, fieldId) {
 
           const formData = new FormData();
           formData.append("audio_file", audioBlob, `${fieldId}.webm`);
-          formData.append("field_id", fieldId);
+          
 
           fetch("/upload", {
             method: "POST",
@@ -223,11 +223,11 @@ function startRecording(buttonId, fieldId) {
     }
 
 
-    function stopRecording(buttonId) {
-      if (recorder) {
+    function stopRecording(buttonId, fieldId) {
+      
         recorder.stop();
         document.getElementById(buttonId).innerHTML = "<i class='icon'>🎤</i>";
-      }
+      
     }
 
     const voiceFields = ["username", "email", "password", "confirmPassword", "loginEmail", "loginPassword"];
@@ -239,7 +239,7 @@ function startRecording(buttonId, fieldId) {
           if (button.innerHTML.includes("🎤")) {
             startRecording(buttonId, fieldId); 
           } else {
-            stopRecording(buttonId);
+            stopRecording(buttonId, fieldId);
           }
         });
       }

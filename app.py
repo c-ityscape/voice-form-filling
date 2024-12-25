@@ -1,20 +1,23 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_from_directory, render_template,redirect,url_for
 import os
 import whisper
 import re
 
 app = Flask(__name__)
-
+model=whisper.load_model("tiny")
 # Function to preprocess email addresses
 def preprocess_email(text):
   return re.sub(r' at (the )?rate ', '@', text, flags=re.IGNORECASE)
 
 # Consider lazy loading or model pooling for scalability
-model = None
+
 
 @app.route('/')
 def home():
-  return render_template('signup.html')  # Serve signup form FIRST
+  return redirect(url_for('server_signup'))  # Serve signup form FIRST
+@app.route('/signup') #New route for signup page
+def server_signup():
+  return render_template('signup.html')
 
 @app.route('/registration') #New route for registration page
 def registration():
@@ -26,7 +29,8 @@ def upload_audio():
     return jsonify({"message": "No audio file provided"}), 400
 
   audio_file = request.files['audio_file']
-  filename = audio_file.filename
+  context=request.form.get("context","").lower()
+  filename=audio_file.filename
 
   # Sanitize filename (optional)
   # filename = os.path.splitext(os.path.basename(filename))[0]
@@ -36,36 +40,26 @@ def upload_audio():
   file_path = os.path.join("uploads", filename)
   audio_file.save(file_path)
 
-  # Load the Whisper model (consider lazy loading/pooling)
-  global model
-  if model is None:
-    model = whisper.load_model("tiny")
 
   try:
     result = model.transcribe(file_path)
     transcribed_text = result.get("text", "")
 
-    # Identify the field based on the request data (e.g., using a hidden field)
-    field_name = request.form.get('field_id')
-
     # Preprocess text based on the field
-    if field_name == 'email' or field_name == 'loginEmail':
-      processed_text = preprocess_email(transcribed_text)
-    else:
-      processed_text = transcribed_text
+    if context == 'email' or context == 'loginEmail':
+      transcribed_text = preprocess_email(transcribed_text)
 
-    # Debugging print statements
-    print(f"Transcribed text: {transcribed_text}")
-    print(f"Processed text: {processed_text}")
-
-    # Delete the uploaded file after transcription
     os.remove(file_path)
+    return jsonify({"message": "Audio file processed successfully.", "text": transcribed_text}), 200
 
-    return jsonify({"message": "Audio file processed successfully.", "text": processed_text})
-  except whisper.DecodingError as e:
-    return jsonify({"message": f"Decoding error: {str(e)}"}), 500
   except Exception as e:
     return jsonify({"message": f"Failed to process audio: {str(e)}"}), 500
-
+def preprocess_email(transcription):
+    transcription = transcription.lower()
+    transcription = transcription.replace(" at ", "@")
+    transcription = transcription.replace(" dot ", ".")
+    transcription = transcription.replace(" ", "")
+    return transcription
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+    port=int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port,debug=True)
