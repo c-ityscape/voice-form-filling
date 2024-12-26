@@ -24,7 +24,7 @@ model = None
 def get_model():
     global model
     if model is None:
-        model = whisper.load_model("tiny")
+        model = whisper.load_model("base.en")
     return model
 
 def cleanup_model():
