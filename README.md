@@ -7,7 +7,7 @@ This is a Flask-based web application that leverages OpenAI's Whisper model for 
 ---
 ## Screenshots
 ![Screenshot 1](https://github.com/c-ityscape/voice-form-filling/blob/main/Screenshot%202024-12-26%20134247.png)
-![Screenshot 2](URL_TO_YOUR_SECOND_IMAGE)
+![Screenshot 2](https://github.com/c-ityscape/voice-form-filling/blob/main/Screenshot%202024-12-26%20140759.png)
 
 ## Features
 - **Voice-to-Text Transcription**: Uses OpenAI's Whisper model to transcribe uploaded audio files.
