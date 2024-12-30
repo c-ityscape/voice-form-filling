@@ -95,9 +95,9 @@ voice-form-filling/
 - **Whisper Model**: Developed by OpenAI.
 - Flask Framework: Lightweight Python web framework.
 
-  -MIT License
+-MIT License
 
-Copyright (c) 2024 Infosys
+Copyright (c) 2024 Vidzai Digital
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
